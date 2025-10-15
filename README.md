@@ -18,7 +18,8 @@
 
 </div>
 
-![Uploading Imagen de WhatsApp 2025-10-14 a las 22.02.19_e3506ed3.jpg…]()
+
+<img width="1920" height="1080" alt="Captura de pantalla 2025-10-14 220051" src="https://github.com/user-attachments/assets/b34de750-4cba-42d3-9f2b-f7dc88cdc797" />
 
 ## 🎯 Sobre el Proyecto
 
