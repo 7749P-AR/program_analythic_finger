@@ -246,8 +246,6 @@ python main.py
 - Cross-platform (Desktop & Web)
 - Built with accessibility in mind
 
-For detailed documentation in English, check [DOCS.md](DOCS.md)
-
 ---
 
 *Last updated: October 2025*
