@@ -17,7 +17,8 @@
 ---
 
 </div>
-![Imagen de WhatsApp 2025-10-14 a las 22 02 19_27329f77](https://github.com/user-attachments/assets/8f01e7ac-9863-4b3c-9db5-cb89206d69b6)
+
+![Uploading Imagen de WhatsApp 2025-10-14 a las 22.02.19_e3506ed3.jpg…]()
 
 ## 🎯 Sobre el Proyecto
 
