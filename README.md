@@ -189,6 +189,10 @@ Este proyecto es de **código abierto** y libre uso bajo licencia MIT.
 - **Flet** - Apache License 2.0
 - Todas las librerías mantienen sus licencias originales
 
+Resultado 🚀:
+![Imagen de WhatsApp 2025-10-14 a las 22 02 19_27329f77](https://github.com/user-attachments/assets/8f01e7ac-9863-4b3c-9db5-cb89206d69b6)
+
+
 ## 👨‍💻 Autor
 
 **Piero Abal Robles**  
