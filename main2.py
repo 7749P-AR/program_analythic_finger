@@ -6,6 +6,7 @@ import time
 import mediapipe as mp
 import numpy as np
 from collections import deque
+import pyttsx3
 
 class SignLanguageRecognizer:
     """Clase para reconocer letras del lenguaje de señas"""
@@ -208,7 +209,7 @@ class HandDetectionApp:
         self.mp_hands = mp.solutions.hands
         self.hands = self.mp_hands.Hands(
             static_image_mode=False,
-            max_num_hands=2,  # Solo una mano para mejor precisión
+            max_num_hands=2,
             min_detection_confidence=0.7,
             min_tracking_confidence=0.5
         )
@@ -226,11 +227,22 @@ class HandDetectionApp:
         # Texto acumulado
         self.accumulated_text = ""
         
+        # Motor de texto a voz - se inicializará bajo demanda
+        self.tts_available = True
+        try:
+            # Probar si pyttsx3 está disponible
+            test_engine = pyttsx3.init()
+            test_engine.stop()
+            del test_engine
+        except Exception as e:
+            print(f"TTS no disponible: {e}")
+            self.tts_available = False
+        
     def main(self, page: ft.Page):
         self.page = page
         page.title = "Detector de Lenguaje de Señas"
         page.window_width = 1100
-        page.window_height = 800
+        page.window_height = 850
         
         # Componentes de la interfaz
         self.image_display = ft.Image(
@@ -295,6 +307,18 @@ class HandDetectionApp:
             )
         )
         
+        # Nuevo botón de texto a voz
+        self.speak_button = ft.ElevatedButton(
+            text="Leer en Voz Alta",
+            icon=ft.Icons.VOLUME_UP,
+            on_click=self.speak_text,
+            style=ft.ButtonStyle(
+                color=ft.Colors.WHITE,
+                bgcolor=ft.Colors.TEAL,
+                shape=ft.RoundedRectangleBorder(radius=10)
+            )
+        )
+        
         # Configurar eventos de ventana
         page.window_prevent_close = True
         page.on_window_event = self.on_window_event
@@ -324,6 +348,8 @@ class HandDetectionApp:
                             self.clear_button,
                             ft.Container(width=10),
                             self.add_space_button,
+                            ft.Container(width=10),
+                            self.speak_button,
                             ft.Container(width=20),
                             self.status_text,
                         ], alignment=ft.MainAxisAlignment.CENTER),
@@ -399,6 +425,7 @@ class HandDetectionApp:
                             ft.Text("• Mantén la posición estable por 1 segundo para que se registre"),
                             ft.Text("• Las letras detectadas aparecerán automáticamente en el texto"),
                             ft.Text("• Usa el botón 'Espacio' para agregar espacios entre palabras"),
+                            ft.Text("• Presiona 'Leer en Voz Alta' para escuchar el texto formado"),
                         ], spacing=5),
                         bgcolor=ft.Colors.PURPLE_50,
                         border_radius=10,
@@ -410,6 +437,60 @@ class HandDetectionApp:
                 padding=30
             )
         )
+    
+    def speak_text(self, e):
+        """Lee en voz alta el texto acumulado"""
+        if not self.tts_available:
+            self.show_error("Motor de voz no disponible")
+            return
+        
+        text = self.accumulated_text.strip()
+        
+        if not text:
+            self.status_text.value = "No hay texto para leer"
+            self.status_text.color = ft.Colors.ORANGE
+            if self.page:
+                self.page.update()
+            return
+        
+        # Ejecutar en un hilo separado para no bloquear la UI
+        def speak_thread():
+            try:
+                self.status_text.value = "🔊 Leyendo texto..."
+                self.status_text.color = ft.Colors.TEAL
+                if self.page:
+                    self.page.update()
+                
+                # Crear una nueva instancia del motor para cada lectura
+                tts_engine = pyttsx3.init()
+                tts_engine.setProperty('rate', 150)
+                tts_engine.setProperty('volume', 0.9)
+                
+                tts_engine.say(text)
+                tts_engine.runAndWait()
+                
+                # Limpiar el motor después de usarlo
+                tts_engine.stop()
+                del tts_engine
+                
+                if self.camera_active:
+                    self.status_text.value = "Cámara activada - Forma las letras..."
+                    self.status_text.color = ft.Colors.GREEN
+                else:
+                    self.status_text.value = "Cámara desactivada"
+                    self.status_text.color = ft.Colors.GREY_600
+                
+                if self.page:
+                    self.page.update()
+                    
+            except Exception as ex:
+                print(f"Error al leer texto: {ex}")
+                self.status_text.value = "Error al leer el texto"
+                self.status_text.color = ft.Colors.RED
+                if self.page:
+                    self.page.update()
+        
+        threading.Thread(target=speak_thread, daemon=True).start()
     
     def clear_text(self, e):
         """Limpia el texto acumulado"""
@@ -486,7 +567,6 @@ class HandDetectionApp:
                 self.detected_letter.value = detected_letter
             else:
                 # Solo limpiar la última letra detectada cuando no hay mano
-                # NO limpiar el buffer inmediatamente para dar tiempo de transición
                 if len(self.letter_buffer) > 0:
                     self.letter_buffer.popleft()
                 
