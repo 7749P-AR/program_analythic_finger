@@ -4,3 +4,6 @@ opencv-contrib-python>=4.11.0.86
 numpy>=1.26.4
 mediapipe>=0.10.21
 pyttsx3 >= 2.99
+tensorflow==2.20.0
+keras==3.12.0
+protobuf>=5.28.0
