@@ -72,20 +72,23 @@ Con el apoyo de la comunidad, el proyecto expandirá sus capacidades:
 - Git
 
 ### Paso 1: Clonar el repositorio
-
+Tiene que crear una carpeta en su dispositivo (computadora o laptop).
+Luego en esa misma carpeta clonar el repositorio, ya sea descargandolo y moviendolo ahí o (lo más recomendable), entrar a git bash, ubicarse en la carpeta y ejecutar el comando:
 ```bash
 git clone https://github.com/7749P-AR/Program_analythic_finger.git
 cd Program_analythic_finger
 ```
 
 ### Paso 2: Crear entorno virtual
-
+Una vez tenga el archivo dentro de su carpeta, entra a la carpeta "program_analythic_finger" y borra la carpeta .venv,
+luego sale y entra a la carpeta otra vez (program_analythic_finger) usando visual studio code o su editor de preferencia.
+Luego abre una terminal ("Ctrl + Ñ" para VSC) e inserta el código para crear otro entorno virtual:
 ```bash
 python -m venv .venv
 ```
 
 ### Paso 3: Activar entorno virtual
-
+Luego activa su entorno virtual con el comando:
 **Windows (PowerShell/CMD):**
 ```bash
 .venv\Scripts\activate
@@ -97,7 +100,7 @@ source .venv/bin/activate
 ```
 
 > ⚠️ **¿Scripts bloqueados en Windows?**
-> 
+> Si le sale un error de scripts no reconocibles o bloqueado, tiene que ingresar a su PowerShell en modo administrador y ejecutar:
 > Abre PowerShell como **Administrador** y ejecuta:
 > ```powershell
 > Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
@@ -107,9 +110,10 @@ source .venv/bin/activate
 > ```powershell
 > Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
 > ```
+Luego de eso no debería tener problemas
 
 ### Paso 4: Instalar dependencias
-
+Ahora instala las dependencias, ingresa a la terminal de VSC otra vez e inserta el código:
 ```bash
 pip install -r requirements.txt
 ```
@@ -120,7 +124,15 @@ pip install -r requirements.txt
 > - Selecciona el que termine en `(.venv)`
 
 ### Paso 5: ¡Ejecutar!
+Ahora deberías tener todas los requisitos de ejecución técnicos, recuerda que en algunos casos puede haber conflictos por tu versión de python, ya que tensorflow usa una versión compatible con windows desde cierta versión en adelante, pero son casos algo aislados o poco frecuentes.
+Recuerda tener en cuenta tu GPU para Tensorflow.
+Finalmente, corre el programa con el siguiente código:
 
+Programa versión 01:
+```bash
+python main.py
+```
+Programa versión 02:
 ```bash
 python main.py
 ```
